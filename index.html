@@ -3,88 +3,1346 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Kartu Stok SAPA</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#18212f}
-header{background:#0f766e;color:#fff;padding:18px 16px;position:sticky;top:0;z-index:5}
-h1{margin:0;font-size:22px}.sub{font-size:13px;margin-top:5px;opacity:.9}
-.wrap{max-width:1200px;margin:auto;padding:16px}
-.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
-.card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px #0001}.card small{color:#6b7280}
-.card b{display:block;font-size:22px;margin-top:5px}
-.controls{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:8px}
-input,button{font:inherit;padding:11px 12px;border-radius:9px;border:1px solid #d1d5db}
-input{width:100%}button{background:#0f766e;color:white;border:0}
-.status{font-size:12px;color:#6b7280;margin:8px 0}
-.tablebox{background:white;border-radius:12px;overflow:auto;box-shadow:0 2px 10px #0001}
-table{width:100%;border-collapse:collapse;min-width:900px}
-th,td{padding:10px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:13px;white-space:nowrap}
-th{background:#f0fdfa;color:#115e59}.num{text-align:right}
-.badge{padding:4px 7px;border-radius:99px;background:#ecfdf5;color:#047857;font-size:11px}
-.warn{background:#fff7ed;color:#c2410c}.empty{text-align:center;padding:30px;color:#6b7280}
-@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:1fr}}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f7fb;
+  color:#18212f;
+}
+
+header{
+  background:#0f766e;
+  color:white;
+  padding:18px 16px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+h1{
+  margin:0;
+  font-size:22px;
+}
+
+.sub{
+  font-size:13px;
+  margin-top:5px;
+  opacity:.9;
+}
+
+.wrap{
+  max-width:1400px;
+  margin:auto;
+  padding:16px;
+}
+
+
+/* =========================
+   KARTU
+========================= */
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.card{
+  background:white;
+  border-radius:12px;
+  padding:14px;
+  box-shadow:0 2px 10px #0001;
+}
+
+.card small{
+  color:#6b7280;
+}
+
+.card b{
+  display:block;
+  font-size:22px;
+  margin-top:5px;
+}
+
+
+/* =========================
+   FILTER
+========================= */
+
+.filters{
+  background:white;
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:12px;
+  box-shadow:0 2px 10px #0001;
+}
+
+.filter-title{
+  font-weight:bold;
+  margin-bottom:10px;
+  color:#115e59;
+}
+
+.filter-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr 1fr;
+  gap:10px;
+}
+
+input,
+select,
+button{
+  font:inherit;
+  padding:11px 12px;
+  border-radius:9px;
+  border:1px solid #d1d5db;
+}
+
+input,
+select{
+  width:100%;
+  background:white;
+}
+
+button{
+  background:#0f766e;
+  color:white;
+  border:0;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status{
+  font-size:12px;
+  color:#6b7280;
+  margin:8px 0;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.tablebox{
+  background:white;
+  border-radius:12px;
+  overflow:auto;
+  box-shadow:0 2px 10px #0001;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:1200px;
+}
+
+th,
+td{
+  padding:10px;
+  border-bottom:1px solid #e5e7eb;
+  text-align:left;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+th{
+  background:#f0fdfa;
+  color:#115e59;
+  position:sticky;
+  top:0;
+}
+
+.num{
+  text-align:right;
+}
+
+
+/* =========================
+   BADGE
+========================= */
+
+.badge{
+  padding:4px 7px;
+  border-radius:99px;
+  background:#ecfdf5;
+  color:#047857;
+  font-size:11px;
+}
+
+.warn{
+  background:#fff7ed;
+  color:#c2410c;
+}
+
+.zone{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:8px;
+  background:#ccfbf1;
+  color:#115e59;
+  font-weight:bold;
+  font-size:12px;
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#6b7280;
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+.reset{
+  background:#64748b;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+  .cards{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .filter-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+
+@media(max-width:600px){
+
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .filter-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
 </style>
 </head>
+
+
 <body>
-<header><h1>Kartu Stok SAPA</h1><div class="sub">OH Hand • OH Picking • Shipping • Belum Shipping • Stok Aktual</div></header>
+
+
+<header>
+
+<h1>Kartu Stok SAPA</h1>
+
+<div class="sub">
+Zona • Lokasi • DESCP • OH Hand • OH Picking • Shipping • Stok Aktual
+</div>
+
+</header>
+
+
+
 <div class="wrap">
+
+
+<!-- =========================
+     KARTU TOTAL
+========================= -->
+
 <div class="cards">
-<div class="card"><small>Total Item</small><b id="totalItem">0</b></div>
-<div class="card"><small>OH Hand</small><b id="totalHand">0</b></div>
-<div class="card"><small>OH Picking</small><b id="totalPicking">0</b></div>
-<div class="card"><small>Shipping</small><b id="totalShipping">0</b></div>
-<div class="card"><small>Belum Shipping</small><b id="totalPending">0</b></div>
+
+<div class="card">
+<small>Total Item</small>
+<b id="totalItem">0</b>
 </div>
-<div class="controls"><input id="search" placeholder="Cari barcode, PLU, nama barang, lokasi..."><button onclick="loadData()">↻ Refresh</button></div>
-<div class="status" id="status">Mengambil data...</div>
-<div class="tablebox"><table><thead><tr>
-<th>Barcode</th><th>PLU</th><th>Nama Barang</th><th>Lokasi</th><th class="num">OH Hand</th><th class="num">OH Picking</th><th class="num">Shipping</th><th class="num">Belum Shipping</th><th class="num">Stok Aktual</th>
-</tr></thead><tbody id="tbody"><tr><td colspan="9" class="empty">Mengambil data...</td></tr></tbody></table></div>
+
+<div class="card">
+<small>OH Hand</small>
+<b id="totalHand">0</b>
 </div>
+
+<div class="card">
+<small>OH Picking</small>
+<b id="totalPicking">0</b>
+</div>
+
+<div class="card">
+<small>Shipping</small>
+<b id="totalShipping">0</b>
+</div>
+
+<div class="card">
+<small>Belum Shipping</small>
+<b id="totalPending">0</b>
+</div>
+
+</div>
+
+
+
+<!-- =========================
+     FILTER
+========================= -->
+
+<div class="filters">
+
+<div class="filter-title">
+🔎 Filter Data Stok
+</div>
+
+
+<div class="filter-grid">
+
+
+<!-- SEARCH -->
+
+<input
+id="search"
+placeholder="Cari Barcode / PLU / DESCP..."
+>
+
+
+<!-- ZONA -->
+
+<select id="filterZona">
+
+<option value="">
+Semua Zona
+</option>
+
+</select>
+
+
+<!-- LOKASI -->
+
+<select id="filterLokasi">
+
+<option value="">
+Semua Lokasi
+</option>
+
+</select>
+
+
+<!-- ON HAND -->
+
+<select id="filterHand">
+
+<option value="">
+Semua ON HAND
+</option>
+
+<option value="zero">
+= 0
+</option>
+
+<option value="positive">
+> 0
+</option>
+
+<option value="1-10">
+1 - 10
+</option>
+
+<option value="11-50">
+11 - 50
+</option>
+
+<option value="51-100">
+51 - 100
+</option>
+
+<option value="100+">
+> 100
+</option>
+
+</select>
+
+
+<!-- RESET -->
+
+<button
+class="reset"
+onclick="resetFilter()"
+>
+Reset Filter
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<!-- =========================
+     STATUS
+========================= -->
+
+<div
+class="status"
+id="status"
+>
+Mengambil data...
+</div>
+
+
+
+<!-- =========================
+     TABLE
+========================= -->
+
+<div class="tablebox">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Zona</th>
+
+<th>Lokasi</th>
+
+<th>Barcode</th>
+
+<th>PLU</th>
+
+<th>DESCP / Nama Barang</th>
+
+<th class="num">
+OH Hand
+</th>
+
+<th class="num">
+OH Picking
+</th>
+
+<th class="num">
+Shipping
+</th>
+
+<th class="num">
+Belum Shipping
+</th>
+
+<th class="num">
+Stok Aktual
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="tbody">
+
+<tr>
+
+<td
+colspan="10"
+class="empty"
+>
+Mengambil data...
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+</div>
+
+
+
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbxRa4JXvbLPGqQBr-GYDinXIEWfutcuMj-RNzDDuSwy6rZVZyldIWZ5TeuOdRxqiibuAQ/exec";
-let allData=[];
-const n=v=>Number(v)||0;
-const fmt=v=>n(v).toLocaleString('id-ID');
+
+
+/* =========================================================
+   API
+========================================================= */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxRa4JXvbLPGqQBr-GYDinXIEWfutcuMj-RNzDDuSwy6rZVZyldIWZ5TeuOdRxqiibuAQ/exec";
+
+
+let allData = [];
+
+
+
+/* =========================================================
+   HELPER ANGKA
+========================================================= */
+
+const n =
+v => Number(v) || 0;
+
+
+const fmt =
+v =>
+n(v).toLocaleString("id-ID");
+
+
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
 
 async function loadData(){
- const s=document.getElementById('status');
- s.textContent='Mengambil data dari Google Sheet...';
- try{
-  const r=await fetch(API_URL+'?action=stock&ts='+Date.now(),{cache:'no-store'});
-  if(!r.ok)throw Error('HTTP '+r.status);
-  const j=await r.json();
-  if(!j.ok)throw Error(j.error||'Gagal membaca data');
-  allData=Array.isArray(j.data)?j.data:[];
-  render();
-  s.textContent='Data diperbarui • '+new Date().toLocaleTimeString('id-ID');
- }catch(e){
-  s.textContent='Gagal mengambil data: '+e.message;
-  document.getElementById('tbody').innerHTML='<tr><td colspan="9" class="empty">Data belum dapat dibaca. Cek deployment Web App.</td></tr>';
- }
+
+  const status =
+  document.getElementById(
+    "status"
+  );
+
+
+  status.textContent =
+  "Mengambil data dari Google Sheet...";
+
+
+  try{
+
+
+    const response =
+    await fetch(
+      API_URL +
+      "?action=stock&ts=" +
+      Date.now(),
+      {
+        cache:"no-store"
+      }
+    );
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
+    }
+
+
+    const json =
+    await response.json();
+
+
+    if(!json.ok){
+
+      throw new Error(
+        json.error ||
+        "Gagal membaca data"
+      );
+
+    }
+
+
+    allData =
+    Array.isArray(
+      json.data
+    )
+      ? json.data
+      : [];
+
+
+    createFilters();
+
+    render();
+
+
+    status.textContent =
+    "Data diperbarui • " +
+    new Date()
+      .toLocaleTimeString(
+        "id-ID"
+      ) +
+    " • " +
+    fmt(allData.length) +
+    " item";
+
+
+  }catch(error){
+
+
+    console.error(error);
+
+
+    status.textContent =
+    "Gagal mengambil data: " +
+    error.message;
+
+
+    document.getElementById(
+      "tbody"
+    ).innerHTML =
+
+    `<tr>
+      <td
+        colspan="10"
+        class="empty"
+      >
+        Data belum dapat dibaca.
+        Cek koneksi Google Apps Script.
+      </td>
+    </tr>`;
+
+
+  }
+
 }
+
+
+
+/* =========================================================
+   BUAT FILTER ZONA & LOKASI
+========================================================= */
+
+function createFilters(){
+
+  const zonaSelect =
+  document.getElementById(
+    "filterZona"
+  );
+
+
+  const lokasiSelect =
+  document.getElementById(
+    "filterLokasi"
+  );
+
+
+  /*
+   * Simpan pilihan sebelumnya
+   */
+
+  const oldZona =
+  zonaSelect.value;
+
+
+  const oldLokasi =
+  lokasiSelect.value;
+
+
+  /*
+   * Ambil zona unik
+   */
+
+  const zonaSet =
+  new Set();
+
+
+  /*
+   * Ambil lokasi unik
+   */
+
+  const lokasiSet =
+  new Set();
+
+
+  allData.forEach(
+    item => {
+
+
+      if(item.zona){
+
+        zonaSet.add(
+          String(item.zona)
+        );
+
+      }
+
+
+      if(item.lokasi){
+
+        lokasiSet.add(
+          String(item.lokasi)
+        );
+
+      }
+
+    }
+  );
+
+
+  /*
+   * Urutkan
+   */
+
+  const zonas =
+  Array.from(
+    zonaSet
+  ).sort();
+
+
+  const lokasis =
+  Array.from(
+    lokasiSet
+  ).sort();
+
+
+
+  /*
+   * Reset zona
+   */
+
+  zonaSelect.innerHTML =
+  '<option value="">Semua Zona</option>';
+
+
+  zonas.forEach(
+    zona => {
+
+      const option =
+      document.createElement(
+        "option"
+      );
+
+      option.value =
+      zona;
+
+      option.textContent =
+      zona;
+
+      zonaSelect.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+
+  /*
+   * Reset lokasi
+   */
+
+  lokasiSelect.innerHTML =
+  '<option value="">Semua Lokasi</option>';
+
+
+  lokasis.forEach(
+    lokasi => {
+
+      const option =
+      document.createElement(
+        "option"
+      );
+
+      option.value =
+      lokasi;
+
+      option.textContent =
+      lokasi;
+
+      lokasiSelect.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+
+  /*
+   * Kembalikan pilihan
+   */
+
+  if(
+    zonas.includes(oldZona)
+  ){
+
+    zonaSelect.value =
+    oldZona;
+
+  }
+
+
+  if(
+    lokasis.includes(oldLokasi)
+  ){
+
+    lokasiSelect.value =
+    oldLokasi;
+
+  }
+
+}
+
+
+
+/* =========================================================
+   RENDER DATA
+========================================================= */
 
 function render(){
- const q=document.getElementById('search').value.toLowerCase().trim();
- const d=allData.filter(x=>!q||[x.barcode,x.plu,x.product,x.lokasi,x.dept].join(' ').toLowerCase().includes(q));
- document.getElementById('totalItem').textContent=fmt(d.length);
- document.getElementById('totalHand').textContent=fmt(d.reduce((a,x)=>a+n(x.ohHand),0));
- document.getElementById('totalPicking').textContent=fmt(d.reduce((a,x)=>a+n(x.ohPicking),0));
- document.getElementById('totalShipping').textContent=fmt(d.reduce((a,x)=>a+n(x.shipping),0));
- document.getElementById('totalPending').textContent=fmt(d.reduce((a,x)=>a+n(x.pending),0));
 
- document.getElementById('tbody').innerHTML=d.length?d.map(x=>{
-   const warn=n(x.pending)>0?'warn':'';
-   return '<tr><td>'+esc(x.barcode)+'</td><td>'+esc(x.plu)+'</td><td>'+esc(x.product)+'</td><td>'+esc(x.lokasi)+'</td><td class="num">'+fmt(x.ohHand)+'</td><td class="num">'+fmt(x.ohPicking)+'</td><td class="num"><span class="badge">'+fmt(x.shipping)+'</span></td><td class="num"><span class="badge '+warn+'">'+fmt(x.pending)+'</span></td><td class="num"><b>'+fmt(x.actual)+'</b></td></tr>';
- }).join(''):'<tr><td colspan="9" class="empty">Data tidak ditemukan</td></tr>';
+
+  const search =
+  document.getElementById(
+    "search"
+  )
+  .value
+  .toLowerCase()
+  .trim();
+
+
+  const zona =
+  document.getElementById(
+    "filterZona"
+  ).value;
+
+
+  const lokasi =
+  document.getElementById(
+    "filterLokasi"
+  ).value;
+
+
+  const handFilter =
+  document.getElementById(
+    "filterHand"
+  ).value;
+
+
+
+  /*
+   * FILTER DATA
+   */
+
+  const filtered =
+  allData.filter(
+    item => {
+
+
+      /*
+       * Search
+       */
+
+      const text = [
+
+        item.barcode,
+
+        item.plu,
+
+        item.product,
+
+        item.lokasi,
+
+        item.zona,
+
+        item.dept
+
+      ]
+      .join(" ")
+      .toLowerCase();
+
+
+      if(
+        search &&
+        !text.includes(search)
+      ){
+
+        return false;
+
+      }
+
+
+
+      /*
+       * Zona
+       */
+
+      if(
+        zona &&
+        String(
+          item.zona || ""
+        ) !== zona
+      ){
+
+        return false;
+
+      }
+
+
+
+      /*
+       * Lokasi
+       */
+
+      if(
+        lokasi &&
+        String(
+          item.lokasi || ""
+        ) !== lokasi
+      ){
+
+        return false;
+
+      }
+
+
+
+      /*
+       * ON HAND
+       */
+
+      const hand =
+      n(item.ohHand);
+
+
+      if(
+        handFilter === "zero" &&
+        hand !== 0
+      ){
+
+        return false;
+
+      }
+
+
+      if(
+        handFilter === "positive" &&
+        hand <= 0
+      ){
+
+        return false;
+
+      }
+
+
+      if(
+        handFilter === "1-10" &&
+        (
+          hand < 1 ||
+          hand > 10
+        )
+      ){
+
+        return false;
+
+      }
+
+
+      if(
+        handFilter === "11-50" &&
+        (
+          hand < 11 ||
+          hand > 50
+        )
+      ){
+
+        return false;
+
+      }
+
+
+      if(
+        handFilter === "51-100" &&
+        (
+          hand < 51 ||
+          hand > 100
+        )
+      ){
+
+        return false;
+
+      }
+
+
+      if(
+        handFilter === "100+" &&
+        hand <= 100
+      ){
+
+        return false;
+
+      }
+
+
+      return true;
+
+    }
+  );
+
+
+
+  /*
+   * TOTAL KARTU
+   */
+
+  document.getElementById(
+    "totalItem"
+  ).textContent =
+  fmt(filtered.length);
+
+
+  document.getElementById(
+    "totalHand"
+  ).textContent =
+  fmt(
+    filtered.reduce(
+      (total,item) =>
+      total +
+      n(item.ohHand),
+      0
+    )
+  );
+
+
+  document.getElementById(
+    "totalPicking"
+  ).textContent =
+  fmt(
+    filtered.reduce(
+      (total,item) =>
+      total +
+      n(item.ohPicking),
+      0
+    )
+  );
+
+
+  document.getElementById(
+    "totalShipping"
+  ).textContent =
+  fmt(
+    filtered.reduce(
+      (total,item) =>
+      total +
+      n(item.shipping),
+      0
+    )
+  );
+
+
+  document.getElementById(
+    "totalPending"
+  ).textContent =
+  fmt(
+    filtered.reduce(
+      (total,item) =>
+      total +
+      n(item.pending),
+      0
+    )
+  );
+
+
+
+  /*
+   * TABEL
+   */
+
+  const tbody =
+  document.getElementById(
+    "tbody"
+  );
+
+
+  if(
+    !filtered.length
+  ){
+
+    tbody.innerHTML =
+    `<tr>
+      <td
+        colspan="10"
+        class="empty"
+      >
+        Data tidak ditemukan
+      </td>
+    </tr>`;
+
+    return;
+
+  }
+
+
+
+  /*
+   * Batasi tampilan
+   * supaya browser tidak berat.
+   */
+
+  const displayData =
+  filtered.slice(
+    0,
+    5000
+  );
+
+
+
+  tbody.innerHTML =
+  displayData
+  .map(
+    item => {
+
+
+      const warn =
+      n(item.pending) > 0
+        ? "warn"
+        : "";
+
+
+      return `
+
+      <tr>
+
+        <td>
+          <span class="zone">
+            ${esc(item.zona)}
+          </span>
+        </td>
+
+        <td>
+          ${esc(item.lokasi)}
+        </td>
+
+        <td>
+          ${esc(item.barcode)}
+        </td>
+
+        <td>
+          ${esc(item.plu)}
+        </td>
+
+        <td>
+          ${esc(item.product)}
+        </td>
+
+        <td class="num">
+          ${fmt(item.ohHand)}
+        </td>
+
+        <td class="num">
+          ${fmt(item.ohPicking)}
+        </td>
+
+        <td class="num">
+
+          <span class="badge">
+            ${fmt(item.shipping)}
+          </span>
+
+        </td>
+
+        <td class="num">
+
+          <span
+            class="badge ${warn}"
+          >
+            ${fmt(item.pending)}
+          </span>
+
+        </td>
+
+        <td class="num">
+
+          <b>
+            ${fmt(item.actual)}
+          </b>
+
+        </td>
+
+      </tr>
+
+      `;
+
+    }
+  )
+  .join("");
+
+
+
+  /*
+   * Status jumlah hasil
+   */
+
+  const status =
+  document.getElementById(
+    "status"
+  );
+
+
+  if(
+    filtered.length > 5000
+  ){
+
+    status.textContent =
+    "Menampilkan 5.000 dari " +
+    fmt(filtered.length) +
+    " hasil.";
+
+  }
+
 }
 
-function esc(v){
- return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+
+
+/* =========================================================
+   RESET FILTER
+========================================================= */
+
+function resetFilter(){
+
+  document.getElementById(
+    "search"
+  ).value = "";
+
+
+  document.getElementById(
+    "filterZona"
+  ).value = "";
+
+
+  document.getElementById(
+    "filterLokasi"
+  ).value = "";
+
+
+  document.getElementById(
+    "filterHand"
+  ).value = "";
+
+
+  render();
+
 }
-document.getElementById('search').addEventListener('input',render);
+
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function esc(value){
+
+  return String(
+    value ?? ""
+  )
+  .replace(
+    /[&<>"']/g,
+    function(match){
+
+      return {
+
+        "&":"&amp;",
+
+        "<":"&lt;",
+
+        ">":"&gt;",
+
+        '"':"&quot;",
+
+        "'":"&#039;"
+
+      }[match];
+
+    }
+  );
+
+}
+
+
+
+/* =========================================================
+   EVENT FILTER
+========================================================= */
+
+document
+  .getElementById(
+    "search"
+  )
+  .addEventListener(
+    "input",
+    render
+  );
+
+
+document
+  .getElementById(
+    "filterZona"
+  )
+  .addEventListener(
+    "change",
+    render
+  );
+
+
+document
+  .getElementById(
+    "filterLokasi"
+  )
+  .addEventListener(
+    "change",
+    render
+  );
+
+
+document
+  .getElementById(
+    "filterHand"
+  )
+  .addEventListener(
+    "change",
+    render
+  );
+
+
+
+/* =========================================================
+   LOAD PERTAMA
+========================================================= */
+
 loadData();
-setInterval(loadData,120000);
+
+
+
+/* =========================================================
+   AUTO REFRESH
+   Setiap 2 menit
+========================================================= */
+
+setInterval(
+  loadData,
+  120000
+);
+
 </script>
+
 </body>
 </html>
