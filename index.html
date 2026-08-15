@@ -2,1347 +2,459 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Kartu Stok SAPA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08264b">
+<title>Kartu Stok | SAPA BALARAJA</title>
 
 <style>
-
-*{
-  box-sizing:border-box;
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#172033}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh}
+.sidebar{
+ position:fixed;left:0;top:0;bottom:0;width:240px;background:#08264b;color:#fff;
+ padding:20px 14px;overflow:auto;z-index:10
 }
-
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f4f7fb;
-  color:#18212f;
+.brand{display:flex;gap:11px;align-items:center;padding:5px 10px 22px;border-bottom:1px solid rgba(255,255,255,.13)}
+.brand-icon{font-size:31px}.brand h1{font-size:18px}.brand small{color:#b9c9dc}
+.menu{margin-top:18px}.menu button{
+ display:block;width:100%;border:0;background:transparent;color:#e9f1fb;text-align:left;
+ padding:12px 14px;border-radius:8px;margin:4px 0
 }
-
-header{
-  background:#0f766e;
-  color:white;
-  padding:18px 16px;
-  position:sticky;
-  top:0;
-  z-index:10;
+.menu button:hover,.menu button.active{background:#1976ed;color:white}
+.main{margin-left:240px;min-height:100vh}
+.topbar{
+ height:68px;background:#fff;border-bottom:1px solid #e4e9f0;display:flex;
+ align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:5
 }
-
-h1{
-  margin:0;
-  font-size:22px;
+.refresh{border:1px solid #d6dee9;background:#fff;border-radius:8px;padding:10px 14px;color:#1265d6}
+.content{padding:28px}
+.page-title{display:flex;gap:14px;align-items:center;margin-bottom:20px}
+.title-icon{width:48px;height:48px;border-radius:10px;background:#159447;color:#fff;display:grid;place-items:center;font-size:25px}
+.title-icon.red{background:#dc3030}
+.page-title h2{font-size:25px}.page-title p{color:#718096;margin-top:4px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:18px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 2px 8px rgba(20,35,60,.04)}
+.card-head{padding:16px 20px;border-bottom:1px solid #e8edf3;font-weight:700}
+.form{padding:20px}.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:#334155}
+.field label span{color:#dc2626}
+input,select{
+ width:100%;height:42px;border:1px solid #cfd8e3;border-radius:7px;padding:0 11px;
+ background:#fff;outline:none
 }
-
-.sub{
-  font-size:13px;
-  margin-top:5px;
-  opacity:.9;
+input:focus,select:focus{border-color:#1976ed;box-shadow:0 0 0 3px rgba(25,118,237,.1)}
+.span2{grid-column:span 2}
+.actions{display:flex;gap:9px;margin-top:20px;padding-top:18px;border-top:1px solid #e8edf3}
+.btn{border:0;border-radius:7px;padding:11px 17px;font-weight:700}
+.success{background:#159447;color:#fff}.danger{background:#dc3030;color:#fff}
+.light{background:#fff;border:1px solid #cfd8e3;color:#334155}
+.stock-card{padding:20px}.stock-card.green{background:#f4fff7;border-color:#c9ebd3}
+.stock-card.red{background:#fff6f6;border-color:#f1caca}
+.stock-title{font-weight:700;font-size:16px;margin-bottom:16px}
+.stock-row{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #e3e9ef;font-size:14px}
+.stock-row:last-child{border-bottom:0}.stock-row strong{font-size:17px;text-align:right}
+.section{margin-top:23px}.section h3{font-size:18px;margin-bottom:12px}
+.table-wrap{overflow:auto;background:#fff;border:1px solid #e2e8f0;border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th{background:#146fe5;color:#fff;padding:12px;text-align:left;font-size:13px}
+td{padding:11px 12px;border-bottom:1px solid #e7edf4;font-size:13px}
+.in{color:#16863c;font-weight:700}.out{color:#c62828;font-weight:700}
+.info{margin-top:18px;padding:13px 16px;border:1px solid #cfe0f5;background:#f4f9ff;border-radius:8px;color:#36516f;font-size:13px}
+.hidden{display:none!important}.error{margin-top:12px;color:#b91c1c;background:#fff1f2;border:1px solid #fecdd3;padding:10px;border-radius:7px}
+.success-msg{margin-top:12px;color:#166534;background:#f0fdf4;border:1px solid #bbf7d0;padding:10px;border-radius:7px}
+.status{font-size:12px;color:#64748b;margin-left:10px}
+@media(max-width:900px){
+ .sidebar{width:190px}.main{margin-left:190px}.grid{grid-template-columns:1fr}.form-grid{grid-template-columns:repeat(2,1fr)}
 }
-
-.wrap{
-  max-width:1400px;
-  margin:auto;
-  padding:16px;
+@media(max-width:650px){
+ .sidebar{position:relative;width:100%;height:auto}.app{display:block}.main{margin-left:0}
+ .topbar{padding:0 15px}.content{padding:16px}.form-grid{grid-template-columns:1fr}.span2{grid-column:span 1}
+ .menu{display:grid;grid-template-columns:1fr 1fr}.menu button{margin:2px}
+ .page-title h2{font-size:21px}
 }
-
-
-/* =========================
-   KARTU
-========================= */
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-  margin-bottom:16px;
-}
-
-.card{
-  background:white;
-  border-radius:12px;
-  padding:14px;
-  box-shadow:0 2px 10px #0001;
-}
-
-.card small{
-  color:#6b7280;
-}
-
-.card b{
-  display:block;
-  font-size:22px;
-  margin-top:5px;
-}
-
-
-/* =========================
-   FILTER
-========================= */
-
-.filters{
-  background:white;
-  border-radius:12px;
-  padding:14px;
-  margin-bottom:12px;
-  box-shadow:0 2px 10px #0001;
-}
-
-.filter-title{
-  font-weight:bold;
-  margin-bottom:10px;
-  color:#115e59;
-}
-
-.filter-grid{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr 1fr 1fr;
-  gap:10px;
-}
-
-input,
-select,
-button{
-  font:inherit;
-  padding:11px 12px;
-  border-radius:9px;
-  border:1px solid #d1d5db;
-}
-
-input,
-select{
-  width:100%;
-  background:white;
-}
-
-button{
-  background:#0f766e;
-  color:white;
-  border:0;
-  cursor:pointer;
-}
-
-button:hover{
-  opacity:.9;
-}
-
-
-/* =========================
-   STATUS
-========================= */
-
-.status{
-  font-size:12px;
-  color:#6b7280;
-  margin:8px 0;
-}
-
-
-/* =========================
-   TABLE
-========================= */
-
-.tablebox{
-  background:white;
-  border-radius:12px;
-  overflow:auto;
-  box-shadow:0 2px 10px #0001;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:1200px;
-}
-
-th,
-td{
-  padding:10px;
-  border-bottom:1px solid #e5e7eb;
-  text-align:left;
-  font-size:13px;
-  white-space:nowrap;
-}
-
-th{
-  background:#f0fdfa;
-  color:#115e59;
-  position:sticky;
-  top:0;
-}
-
-.num{
-  text-align:right;
-}
-
-
-/* =========================
-   BADGE
-========================= */
-
-.badge{
-  padding:4px 7px;
-  border-radius:99px;
-  background:#ecfdf5;
-  color:#047857;
-  font-size:11px;
-}
-
-.warn{
-  background:#fff7ed;
-  color:#c2410c;
-}
-
-.zone{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:8px;
-  background:#ccfbf1;
-  color:#115e59;
-  font-weight:bold;
-  font-size:12px;
-}
-
-
-/* =========================
-   EMPTY
-========================= */
-
-.empty{
-  text-align:center;
-  padding:30px;
-  color:#6b7280;
-}
-
-
-/* =========================
-   RESET
-========================= */
-
-.reset{
-  background:#64748b;
-}
-
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:1000px){
-
-  .cards{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .filter-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-}
-
-
-@media(max-width:600px){
-
-  .cards{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .filter-grid{
-    grid-template-columns:1fr;
-  }
-
-}
-
 </style>
 </head>
 
-
 <body>
+<div class="app">
 
+<aside class="sidebar">
+ <div class="brand">
+  <div class="brand-icon">📦</div>
+  <div><h1>KARTU STOK</h1><small>Warehouse System</small></div>
+ </div>
+ <nav class="menu">
+  <button id="navMasuk" class="active">↓ &nbsp; Barang Masuk</button>
+  <button id="navKeluar">↑ &nbsp; Barang Keluar</button>
+  <button id="navMutasi">⇄ &nbsp; Mutasi Stok</button>
+  <button id="navKartu">▣ &nbsp; Kartu Stok</button>
+ </nav>
+</aside>
 
-<header>
-
-<h1>Kartu Stok SAPA</h1>
-
-<div class="sub">
-Zona • Lokasi • DESCP • OH Hand • OH Picking • Shipping • Stok Aktual
-</div>
-
+<main class="main">
+<header class="topbar">
+ <strong>SAPA BALARAJA</strong>
+ <div>
+  <span id="statusText" class="status">Mode offline / belum terhubung</span>
+  <button class="refresh" onclick="loadData()">↻ Refresh Data</button>
+ </div>
 </header>
 
+<div class="content">
 
+<!-- BARANG MASUK -->
+<section id="pageMasuk">
+ <div class="page-title">
+  <div class="title-icon">↓</div>
+  <div><h2>Input Barang Masuk</h2><p>Catat penerimaan barang ke dalam stok</p></div>
+ </div>
 
-<div class="wrap">
+ <div class="grid">
+  <div class="card">
+   <div class="card-head">Data Transaksi</div>
+   <form class="form" id="formMasuk">
+    <div class="form-grid">
+     <div class="field"><label>Tanggal <span>*</span></label><input type="date" id="tanggalMasuk" required></div>
+     <div class="field"><label>No. Dokumen <span>*</span></label><input id="dokumenMasuk" required></div>
+     <div class="field"><label>Supplier</label><input id="supplier" placeholder="Nama supplier"></div>
+     <div class="field"><label>Gudang</label><select id="gudangMasuk"><option>Gudang Utama</option></select></div>
 
+     <div class="field span2"><label>Kode Barang <span>*</span></label><select id="kodeMasuk" required><option value="">Pilih Barang</option></select></div>
+     <div class="field"><label>Nama Barang</label><input id="namaMasuk" readonly placeholder="-"></div>
+     <div class="field"><label>Satuan</label><input id="satuanMasuk" readonly placeholder="-"></div>
 
-<!-- =========================
-     KARTU TOTAL
-========================= -->
+     <div class="field"><label>Jumlah Masuk <span>*</span></label><input type="number" id="jumlahMasuk" min="1" required></div>
+     <div class="field"><label>Harga Satuan</label><input type="number" id="hargaMasuk" min="0"></div>
+     <div class="field"><label>Total</label><input type="number" id="totalHargaMasuk" min="0"></div>
+     <div class="field"><label>Keterangan</label><input id="ketMasuk" placeholder="Keterangan"></div>
+    </div>
+    <div class="actions">
+     <button class="btn success" type="submit">💾 Simpan Transaksi</button>
+     <button class="btn light" type="reset">↻ Reset</button>
+    </div>
+    <div id="msgMasuk"></div>
+   </form>
+  </div>
 
-<div class="cards">
+  <div class="card stock-card green">
+   <div class="stock-title">📊 Informasi Stok</div>
+   <div class="stock-row"><span>Kode Barang</span><strong id="iKodeM">-</strong></div>
+   <div class="stock-row"><span>Nama Barang</span><strong id="iNamaM">-</strong></div>
+   <div class="stock-row"><span>Stok Saat Ini</span><strong id="iStokM">0</strong></div>
+   <div class="stock-row"><span>Total Masuk</span><strong id="iMasukM">0</strong></div>
+   <div class="stock-row"><span>Total Keluar</span><strong id="iKeluarM">0</strong></div>
+   <div class="stock-row"><span>Stok Akhir</span><strong id="iAkhirM">0</strong></div>
+  </div>
+ </div>
+</section>
 
-<div class="card">
-<small>Total Item</small>
-<b id="totalItem">0</b>
+<!-- BARANG KELUAR -->
+<section id="pageKeluar" class="hidden">
+ <div class="page-title">
+  <div class="title-icon red">↑</div>
+  <div><h2>Input Barang Keluar</h2><p>Catat pengeluaran barang dari stok</p></div>
+ </div>
+
+ <div class="grid">
+  <div class="card">
+   <div class="card-head">Data Transaksi</div>
+   <form class="form" id="formKeluar">
+    <div class="form-grid">
+     <div class="field"><label>Tanggal <span>*</span></label><input type="date" id="tanggalKeluar" required></div>
+     <div class="field"><label>No. Dokumen <span>*</span></label><input id="dokumenKeluar" required></div>
+     <div class="field"><label>Tujuan / Penerima</label><input id="tujuan" placeholder="Nama penerima"></div>
+     <div class="field"><label>Gudang</label><select id="gudangKeluar"><option>Gudang Utama</option></select></div>
+
+     <div class="field span2"><label>Kode Barang <span>*</span></label><select id="kodeKeluar" required><option value="">Pilih Barang</option></select></div>
+     <div class="field"><label>Nama Barang</label><input id="namaKeluar" readonly placeholder="-"></div>
+     <div class="field"><label>Satuan</label><input id="satuanKeluar" readonly placeholder="-"></div>
+
+     <div class="field"><label>Jumlah Keluar <span>*</span></label><input type="number" id="jumlahKeluar" min="1" required></div>
+     <div class="field span2"><label>Keterangan</label><input id="ketKeluar" placeholder="Keterangan"></div>
+    </div>
+    <div class="actions">
+     <button class="btn danger" type="submit">💾 Simpan Transaksi</button>
+     <button class="btn light" type="reset">↻ Reset</button>
+    </div>
+    <div id="msgKeluar"></div>
+   </form>
+  </div>
+
+  <div class="card stock-card red">
+   <div class="stock-title">📊 Informasi Stok</div>
+   <div class="stock-row"><span>Kode Barang</span><strong id="iKodeK">-</strong></div>
+   <div class="stock-row"><span>Nama Barang</span><strong id="iNamaK">-</strong></div>
+   <div class="stock-row"><span>Stok Saat Ini</span><strong id="iStokK">0</strong></div>
+   <div class="stock-row"><span>Total Masuk</span><strong id="iMasukK">0</strong></div>
+   <div class="stock-row"><span>Total Keluar</span><strong id="iKeluarK">0</strong></div>
+   <div class="stock-row"><span>Stok Akhir</span><strong id="iAkhirK">0</strong></div>
+  </div>
+ </div>
+</section>
+
+<!-- MUTASI -->
+<section id="pageMutasi" class="hidden">
+ <div class="page-title">
+  <div class="title-icon" style="background:#146fe5">⇄</div>
+  <div><h2>Mutasi Stok</h2><p>Riwayat transaksi barang</p></div>
+ </div>
+</section>
+
+<!-- KARTU STOK -->
+<section id="pageKartu" class="hidden">
+ <div class="page-title">
+  <div class="title-icon" style="background:#6d28d9">▣</div>
+  <div><h2>Kartu Stok</h2><p>Lihat saldo dan riwayat per barang</p></div>
+ </div>
+ <div class="card form">
+  <div class="field">
+   <label>Pilih Barang</label>
+   <select id="kartuBarang"><option value="">Pilih Barang</option></select>
+  </div>
+  <div id="kartuRingkasan" class="section"></div>
+ </div>
+</section>
+
+<div class="section" id="riwayatSection">
+ <h3>Riwayat Mutasi Terbaru</h3>
+ <div class="table-wrap">
+  <table>
+   <thead><tr><th>Tanggal</th><th>No. Dokumen</th><th>Kode</th><th>Nama Barang</th><th>Keterangan</th><th>Masuk</th><th>Keluar</th><th>Saldo</th></tr></thead>
+   <tbody id="riwayatBody"><tr><td colspan="8" style="text-align:center">Belum ada data.</td></tr></tbody>
+  </table>
+ </div>
 </div>
 
-<div class="card">
-<small>OH Hand</small>
-<b id="totalHand">0</b>
-</div>
-
-<div class="card">
-<small>OH Picking</small>
-<b id="totalPicking">0</b>
-</div>
-
-<div class="card">
-<small>Shipping</small>
-<b id="totalShipping">0</b>
-</div>
-
-<div class="card">
-<small>Belum Shipping</small>
-<b id="totalPending">0</b>
-</div>
-
-</div>
-
-
-
-<!-- =========================
-     FILTER
-========================= -->
-
-<div class="filters">
-
-<div class="filter-title">
-🔎 Filter Data Stok
-</div>
-
-
-<div class="filter-grid">
-
-
-<!-- SEARCH -->
-
-<input
-id="search"
-placeholder="Cari Barcode / PLU / DESCP..."
->
-
-
-<!-- ZONA -->
-
-<select id="filterZona">
-
-<option value="">
-Semua Zona
-</option>
-
-</select>
-
-
-<!-- LOKASI -->
-
-<select id="filterLokasi">
-
-<option value="">
-Semua Lokasi
-</option>
-
-</select>
-
-
-<!-- ON HAND -->
-
-<select id="filterHand">
-
-<option value="">
-Semua ON HAND
-</option>
-
-<option value="zero">
-= 0
-</option>
-
-<option value="positive">
-> 0
-</option>
-
-<option value="1-10">
-1 - 10
-</option>
-
-<option value="11-50">
-11 - 50
-</option>
-
-<option value="51-100">
-51 - 100
-</option>
-
-<option value="100+">
-> 100
-</option>
-
-</select>
-
-
-<!-- RESET -->
-
-<button
-class="reset"
-onclick="resetFilter()"
->
-Reset Filter
-</button>
-
-
+<div class="info">
+ ℹ️ Website ini siap dihubungkan ke Google Sheets. Data masuk/keluar akan disimpan sebagai transaksi dan stok dihitung otomatis.
 </div>
 
 </div>
-
-
-
-<!-- =========================
-     STATUS
-========================= -->
-
-<div
-class="status"
-id="status"
->
-Mengambil data...
+</main>
 </div>
-
-
-
-<!-- =========================
-     TABLE
-========================= -->
-
-<div class="tablebox">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Zona</th>
-
-<th>Lokasi</th>
-
-<th>Barcode</th>
-
-<th>PLU</th>
-
-<th>DESCP / Nama Barang</th>
-
-<th class="num">
-OH Hand
-</th>
-
-<th class="num">
-OH Picking
-</th>
-
-<th class="num">
-Shipping
-</th>
-
-<th class="num">
-Belum Shipping
-</th>
-
-<th class="num">
-Stok Aktual
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="tbody">
-
-<tr>
-
-<td
-colspan="10"
-class="empty"
->
-Mengambil data...
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-
-</div>
-
-
 
 <script>
+/*
+============================================================
+ GOOGLE APPS SCRIPT
+============================================================
+Setelah Apps Script dibuat, masukkan URL Web App di sini.
 
+Contoh:
+const API_URL = "https://script.google.com/macros/s/XXXXXXXX/exec";
+============================================================
+*/
+const API_URL = "";
 
-/* =========================================================
-   API
-========================================================= */
+let masterBarang = [];
+let mutasi = [];
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbxRa4JXvbLPGqQBr-GYDinXIEWfutcuMj-RNzDDuSwy6rZVZyldIWZ5TeuOdRxqiibuAQ/exec";
+const $ = id => document.getElementById(id);
+const today = new Date().toISOString().slice(0,10);
+$("tanggalMasuk").value = today;
+$("tanggalKeluar").value = today;
 
+function showPage(name){
+ const pages = ["Masuk","Keluar","Mutasi","Kartu"];
+ pages.forEach(p => $("page"+p).classList.toggle("hidden", p !== name));
+ $("riwayatSection").classList.toggle("hidden", name === "Kartu");
+ ["Masuk","Keluar","Mutasi","Kartu"].forEach(p => $("nav"+p).classList.toggle("active", p === name));
+}
 
-let allData = [];
+$("navMasuk").onclick=()=>showPage("Masuk");
+$("navKeluar").onclick=()=>showPage("Keluar");
+$("navMutasi").onclick=()=>showPage("Mutasi");
+$("navKartu").onclick=()=>showPage("Kartu");
 
+function msg(id,text,type="error"){
+ const el=$(id);
+ el.className=type==="success"?"success-msg":"error";
+ el.textContent=text||"";
+}
 
+function clearMsg(id){$(id).className="";$(id).textContent=""}
 
-/* =========================================================
-   HELPER ANGKA
-========================================================= */
+function escapeHTML(v){
+ return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
 
-const n =
-v => Number(v) || 0;
+function normalizeBarang(x){
+ return {
+  kode:String(x.kode ?? x.kodeBarang ?? x["Kode Barang"] ?? ""),
+  nama:String(x.nama ?? x.namaBarang ?? x["Nama Barang"] ?? ""),
+  satuan:String(x.satuan ?? x["Satuan"] ?? "")
+ };
+}
 
-
-const fmt =
-v =>
-n(v).toLocaleString("id-ID");
-
-
-
-/* =========================================================
-   LOAD DATA
-========================================================= */
+function normalizeMutasi(x){
+ return {
+  tanggal:x.tanggal ?? x["Tanggal"] ?? "",
+  noDokumen:x.noDokumen ?? x["No Dokumen"] ?? "",
+  kode:String(x.kode ?? x.kodeBarang ?? x["Kode Barang"] ?? ""),
+  nama:String(x.nama ?? x.namaBarang ?? x["Nama Barang"] ?? ""),
+  keterangan:x.keterangan ?? x["Keterangan"] ?? "",
+  masuk:Number(x.masuk ?? x["Masuk"] ?? 0),
+  keluar:Number(x.keluar ?? x["Keluar"] ?? 0)
+ };
+}
 
 async function loadData(){
-
-  const status =
-  document.getElementById(
-    "status"
-  );
-
-
-  status.textContent =
-  "Mengambil data dari Google Sheet...";
-
-
-  try{
-
-
-    const response =
-    await fetch(
-      API_URL +
-      "?action=stock&ts=" +
-      Date.now(),
-      {
-        cache:"no-store"
-      }
-    );
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "HTTP " +
-        response.status
-      );
-
-    }
-
-
-    const json =
-    await response.json();
-
-
-    if(!json.ok){
-
-      throw new Error(
-        json.error ||
-        "Gagal membaca data"
-      );
-
-    }
-
-
-    allData =
-    Array.isArray(
-      json.data
-    )
-      ? json.data
-      : [];
-
-
-    createFilters();
-
-    render();
-
-
-    status.textContent =
-    "Data diperbarui • " +
-    new Date()
-      .toLocaleTimeString(
-        "id-ID"
-      ) +
-    " • " +
-    fmt(allData.length) +
-    " item";
-
-
-  }catch(error){
-
-
-    console.error(error);
-
-
-    status.textContent =
-    "Gagal mengambil data: " +
-    error.message;
-
-
-    document.getElementById(
-      "tbody"
-    ).innerHTML =
-
-    `<tr>
-      <td
-        colspan="10"
-        class="empty"
-      >
-        Data belum dapat dibaca.
-        Cek koneksi Google Apps Script.
-      </td>
-    </tr>`;
-
-
-  }
-
+ if(!API_URL){
+  $("statusText").textContent="Belum terhubung Google Sheets";
+  populateBarang();
+  renderRiwayat();
+  return;
+ }
+ $("statusText").textContent="Mengambil data...";
+ try{
+  const res=await fetch(API_URL+"?action=all",{cache:"no-store"});
+  if(!res.ok) throw new Error("HTTP "+res.status);
+  const data=await res.json();
+  masterBarang=(data.masterBarang||data.barang||[]).map(normalizeBarang);
+  mutasi=(data.mutasi||data.transaksi||[]).map(normalizeMutasi);
+  populateBarang();
+  renderRiwayat();
+  $("statusText").textContent="Terhubung Google Sheets";
+ }catch(e){
+  console.error(e);
+  $("statusText").textContent="Gagal membaca Google Sheets";
+  alert("Gagal membaca data. Pastikan URL Apps Script benar dan akses Web App sudah diatur.");
+ }
 }
 
-
-
-/* =========================================================
-   BUAT FILTER ZONA & LOKASI
-========================================================= */
-
-function createFilters(){
-
-  const zonaSelect =
-  document.getElementById(
-    "filterZona"
-  );
-
-
-  const lokasiSelect =
-  document.getElementById(
-    "filterLokasi"
-  );
-
-
-  /*
-   * Simpan pilihan sebelumnya
-   */
-
-  const oldZona =
-  zonaSelect.value;
-
-
-  const oldLokasi =
-  lokasiSelect.value;
-
-
-  /*
-   * Ambil zona unik
-   */
-
-  const zonaSet =
-  new Set();
-
-
-  /*
-   * Ambil lokasi unik
-   */
-
-  const lokasiSet =
-  new Set();
-
-
-  allData.forEach(
-    item => {
-
-
-      if(item.zona){
-
-        zonaSet.add(
-          String(item.zona)
-        );
-
-      }
-
-
-      if(item.lokasi){
-
-        lokasiSet.add(
-          String(item.lokasi)
-        );
-
-      }
-
-    }
-  );
-
-
-  /*
-   * Urutkan
-   */
-
-  const zonas =
-  Array.from(
-    zonaSet
-  ).sort();
-
-
-  const lokasis =
-  Array.from(
-    lokasiSet
-  ).sort();
-
-
-
-  /*
-   * Reset zona
-   */
-
-  zonaSelect.innerHTML =
-  '<option value="">Semua Zona</option>';
-
-
-  zonas.forEach(
-    zona => {
-
-      const option =
-      document.createElement(
-        "option"
-      );
-
-      option.value =
-      zona;
-
-      option.textContent =
-      zona;
-
-      zonaSelect.appendChild(
-        option
-      );
-
-    }
-  );
-
-
-
-  /*
-   * Reset lokasi
-   */
-
-  lokasiSelect.innerHTML =
-  '<option value="">Semua Lokasi</option>';
-
-
-  lokasis.forEach(
-    lokasi => {
-
-      const option =
-      document.createElement(
-        "option"
-      );
-
-      option.value =
-      lokasi;
-
-      option.textContent =
-      lokasi;
-
-      lokasiSelect.appendChild(
-        option
-      );
-
-    }
-  );
-
-
-
-  /*
-   * Kembalikan pilihan
-   */
-
-  if(
-    zonas.includes(oldZona)
-  ){
-
-    zonaSelect.value =
-    oldZona;
-
-  }
-
-
-  if(
-    lokasis.includes(oldLokasi)
-  ){
-
-    lokasiSelect.value =
-    oldLokasi;
-
-  }
-
+function populateBarang(){
+ ["kodeMasuk","kodeKeluar","kartuBarang"].forEach(id=>{
+  const s=$(id), old=s.value;
+  s.innerHTML='<option value="">Pilih Barang</option>';
+  masterBarang.forEach(b=>{
+   const o=document.createElement("option");
+   o.value=b.kode;o.textContent=b.kode+" - "+b.nama;
+   o.dataset.nama=b.nama;o.dataset.satuan=b.satuan;
+   s.appendChild(o);
+  });
+  if(old) s.value=old;
+ });
 }
 
-
-
-/* =========================================================
-   RENDER DATA
-========================================================= */
-
-function render(){
-
-
-  const search =
-  document.getElementById(
-    "search"
-  )
-  .value
-  .toLowerCase()
-  .trim();
-
-
-  const zona =
-  document.getElementById(
-    "filterZona"
-  ).value;
-
-
-  const lokasi =
-  document.getElementById(
-    "filterLokasi"
-  ).value;
-
-
-  const handFilter =
-  document.getElementById(
-    "filterHand"
-  ).value;
-
-
-
-  /*
-   * FILTER DATA
-   */
-
-  const filtered =
-  allData.filter(
-    item => {
-
-
-      /*
-       * Search
-       */
-
-      const text = [
-
-        item.barcode,
-
-        item.plu,
-
-        item.product,
-
-        item.lokasi,
-
-        item.zona,
-
-        item.dept
-
-      ]
-      .join(" ")
-      .toLowerCase();
-
-
-      if(
-        search &&
-        !text.includes(search)
-      ){
-
-        return false;
-
-      }
-
-
-
-      /*
-       * Zona
-       */
-
-      if(
-        zona &&
-        String(
-          item.zona || ""
-        ) !== zona
-      ){
-
-        return false;
-
-      }
-
-
-
-      /*
-       * Lokasi
-       */
-
-      if(
-        lokasi &&
-        String(
-          item.lokasi || ""
-        ) !== lokasi
-      ){
-
-        return false;
-
-      }
-
-
-
-      /*
-       * ON HAND
-       */
-
-      const hand =
-      n(item.ohHand);
-
-
-      if(
-        handFilter === "zero" &&
-        hand !== 0
-      ){
-
-        return false;
-
-      }
-
-
-      if(
-        handFilter === "positive" &&
-        hand <= 0
-      ){
-
-        return false;
-
-      }
-
-
-      if(
-        handFilter === "1-10" &&
-        (
-          hand < 1 ||
-          hand > 10
-        )
-      ){
-
-        return false;
-
-      }
-
-
-      if(
-        handFilter === "11-50" &&
-        (
-          hand < 11 ||
-          hand > 50
-        )
-      ){
-
-        return false;
-
-      }
-
-
-      if(
-        handFilter === "51-100" &&
-        (
-          hand < 51 ||
-          hand > 100
-        )
-      ){
-
-        return false;
-
-      }
-
-
-      if(
-        handFilter === "100+" &&
-        hand <= 100
-      ){
-
-        return false;
-
-      }
-
-
-      return true;
-
-    }
-  );
-
-
-
-  /*
-   * TOTAL KARTU
-   */
-
-  document.getElementById(
-    "totalItem"
-  ).textContent =
-  fmt(filtered.length);
-
-
-  document.getElementById(
-    "totalHand"
-  ).textContent =
-  fmt(
-    filtered.reduce(
-      (total,item) =>
-      total +
-      n(item.ohHand),
-      0
-    )
-  );
-
-
-  document.getElementById(
-    "totalPicking"
-  ).textContent =
-  fmt(
-    filtered.reduce(
-      (total,item) =>
-      total +
-      n(item.ohPicking),
-      0
-    )
-  );
-
-
-  document.getElementById(
-    "totalShipping"
-  ).textContent =
-  fmt(
-    filtered.reduce(
-      (total,item) =>
-      total +
-      n(item.shipping),
-      0
-    )
-  );
-
-
-  document.getElementById(
-    "totalPending"
-  ).textContent =
-  fmt(
-    filtered.reduce(
-      (total,item) =>
-      total +
-      n(item.pending),
-      0
-    )
-  );
-
-
-
-  /*
-   * TABEL
-   */
-
-  const tbody =
-  document.getElementById(
-    "tbody"
-  );
-
-
-  if(
-    !filtered.length
-  ){
-
-    tbody.innerHTML =
-    `<tr>
-      <td
-        colspan="10"
-        class="empty"
-      >
-        Data tidak ditemukan
-      </td>
-    </tr>`;
-
-    return;
-
-  }
-
-
-
-  /*
-   * Batasi tampilan
-   * supaya browser tidak berat.
-   */
-
-  const displayData =
-  filtered.slice(
-    0,
-    5000
-  );
-
-
-
-  tbody.innerHTML =
-  displayData
-  .map(
-    item => {
-
-
-      const warn =
-      n(item.pending) > 0
-        ? "warn"
-        : "";
-
-
-      return `
-
-      <tr>
-
-        <td>
-          <span class="zone">
-            ${esc(item.zona)}
-          </span>
-        </td>
-
-        <td>
-          ${esc(item.lokasi)}
-        </td>
-
-        <td>
-          ${esc(item.barcode)}
-        </td>
-
-        <td>
-          ${esc(item.plu)}
-        </td>
-
-        <td>
-          ${esc(item.product)}
-        </td>
-
-        <td class="num">
-          ${fmt(item.ohHand)}
-        </td>
-
-        <td class="num">
-          ${fmt(item.ohPicking)}
-        </td>
-
-        <td class="num">
-
-          <span class="badge">
-            ${fmt(item.shipping)}
-          </span>
-
-        </td>
-
-        <td class="num">
-
-          <span
-            class="badge ${warn}"
-          >
-            ${fmt(item.pending)}
-          </span>
-
-        </td>
-
-        <td class="num">
-
-          <b>
-            ${fmt(item.actual)}
-          </b>
-
-        </td>
-
-      </tr>
-
-      `;
-
-    }
-  )
-  .join("");
-
-
-
-  /*
-   * Status jumlah hasil
-   */
-
-  const status =
-  document.getElementById(
-    "status"
-  );
-
-
-  if(
-    filtered.length > 5000
-  ){
-
-    status.textContent =
-    "Menampilkan 5.000 dari " +
-    fmt(filtered.length) +
-    " hasil.";
-
-  }
-
+function getStock(kode){
+ let masuk=0,keluar=0;
+ mutasi.forEach(r=>{
+  if(String(r.kode)===String(kode)){masuk+=r.masuk;keluar+=r.keluar}
+ });
+ return {masuk,keluar,akhir:masuk-keluar};
 }
 
-
-
-/* =========================================================
-   RESET FILTER
-========================================================= */
-
-function resetFilter(){
-
-  document.getElementById(
-    "search"
-  ).value = "";
-
-
-  document.getElementById(
-    "filterZona"
-  ).value = "";
-
-
-  document.getElementById(
-    "filterLokasi"
-  ).value = "";
-
-
-  document.getElementById(
-    "filterHand"
-  ).value = "";
-
-
-  render();
-
+function selectedData(id){
+ const s=$(id),o=s.options[s.selectedIndex];
+ return {kode:s.value,nama:o?.dataset?.nama||"",satuan:o?.dataset?.satuan||""};
 }
 
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function esc(value){
-
-  return String(
-    value ?? ""
-  )
-  .replace(
-    /[&<>"']/g,
-    function(match){
-
-      return {
-
-        "&":"&amp;",
-
-        "<":"&lt;",
-
-        ">":"&gt;",
-
-        '"':"&quot;",
-
-        "'":"&#039;"
-
-      }[match];
-
-    }
-  );
-
+function updateInfo(type){
+ const d=selectedData(type==="masuk"?"kodeMasuk":"kodeKeluar");
+ const st=getStock(d.kode);
+ const p=type==="masuk"?"M":"K";
+ $("nama"+(type==="masuk"?"Masuk":"Keluar")).value=d.nama;
+ $("satuan"+(type==="masuk"?"Masuk":"Keluar")).value=d.satuan;
+ $("iKode"+p).textContent=d.kode||"-";
+ $("iNama"+p).textContent=d.nama||"-";
+ $("iStok"+p).textContent=st.akhir;
+ $("iMasuk"+p).textContent=st.masuk;
+ $("iKeluar"+p).textContent=st.keluar;
+ $("iAkhir"+p).textContent=st.akhir;
 }
 
+$("kodeMasuk").onchange=()=>updateInfo("masuk");
+$("kodeKeluar").onchange=()=>updateInfo("keluar");
 
+$("hargaMasuk").oninput=calcTotal;
+$("jumlahMasuk").oninput=calcTotal;
+function calcTotal(){
+ $("totalHargaMasuk").value=(Number($("hargaMasuk").value||0)*Number($("jumlahMasuk").value||0))||"";
+}
 
-/* =========================================================
-   EVENT FILTER
-========================================================= */
+$("formMasuk").onsubmit=async e=>{
+ e.preventDefault();clearMsg("msgMasuk");
+ const d=selectedData("kodeMasuk");
+ const jumlah=Number($("jumlahMasuk").value);
+ if(!d.kode)return msg("msgMasuk","Pilih barang terlebih dahulu.");
+ await save({
+  jenis:"MASUK",tanggal:$("tanggalMasuk").value,noDokumen:$("dokumenMasuk").value,
+  kodeBarang:d.kode,namaBarang:d.nama,satuan:d.satuan,jumlah,
+  supplier:$("supplier").value,gudang:$("gudangMasuk").value,
+  hargaSatuan:Number($("hargaMasuk").value||0),total:Number($("totalHargaMasuk").value||0),
+  keterangan:$("ketMasuk").value
+ },"msgMasuk");
+};
 
-document
-  .getElementById(
-    "search"
-  )
-  .addEventListener(
-    "input",
-    render
-  );
+$("formKeluar").onsubmit=async e=>{
+ e.preventDefault();clearMsg("msgKeluar");
+ const d=selectedData("kodeKeluar");
+ const jumlah=Number($("jumlahKeluar").value);
+ const st=getStock(d.kode);
+ if(!d.kode)return msg("msgKeluar","Pilih barang terlebih dahulu.");
+ if(jumlah>st.akhir)return msg("msgKeluar","Stok tidak cukup. Stok tersedia: "+st.akhir+" "+d.satuan);
+ await save({
+  jenis:"KELUAR",tanggal:$("tanggalKeluar").value,noDokumen:$("dokumenKeluar").value,
+  kodeBarang:d.kode,namaBarang:d.nama,satuan:d.satuan,jumlah,
+  tujuan:$("tujuan").value,gudang:$("gudangKeluar").value,
+  keterangan:$("ketKeluar").value
+ },"msgKeluar");
+};
 
+async function save(payload,msgId){
+ if(!API_URL){
+  msg(msgId,"URL Google Apps Script belum diisi. Form sudah siap, tetapi belum bisa menyimpan ke Google Sheets.");
+  return;
+ }
+ try{
+  const res=await fetch(API_URL,{
+   method:"POST",
+   headers:{"Content-Type":"text/plain;charset=utf-8"},
+   body:JSON.stringify({action:"add",...payload})
+  });
+  const result=await res.json();
+  if(!result.success)throw new Error(result.message||"Gagal menyimpan.");
+  msg(msgId,"Transaksi berhasil disimpan.","success");
+  await loadData();
+ }catch(e){
+  console.error(e);msg(msgId,e.message||"Gagal menyimpan transaksi.");
+ }
+}
 
-document
-  .getElementById(
-    "filterZona"
-  )
-  .addEventListener(
-    "change",
-    render
-  );
+function renderRiwayat(){
+ const body=$("riwayatBody");
+ if(!mutasi.length){
+  body.innerHTML='<tr><td colspan="8" style="text-align:center">Belum ada data.</td></tr>';return;
+ }
+ const saldo={};
+ const rows=mutasi.map(r=>{
+  if(!saldo[r.kode])saldo[r.kode]=0;
+  saldo[r.kode]+=r.masuk-r.keluar;
+  return {...r,saldo:saldo[r.kode]};
+ });
+ body.innerHTML=rows.slice(-30).reverse().map(r=>`
+  <tr>
+   <td>${escapeHTML(r.tanggal)}</td><td>${escapeHTML(r.noDokumen)}</td>
+   <td>${escapeHTML(r.kode)}</td><td>${escapeHTML(r.nama)}</td>
+   <td>${escapeHTML(r.keterangan)}</td>
+   <td class="in">${r.masuk}</td><td class="out">${r.keluar}</td><td>${r.saldo}</td>
+  </tr>`).join("");
+}
 
-
-document
-  .getElementById(
-    "filterLokasi"
-  )
-  .addEventListener(
-    "change",
-    render
-  );
-
-
-document
-  .getElementById(
-    "filterHand"
-  )
-  .addEventListener(
-    "change",
-    render
-  );
-
-
-
-/* =========================================================
-   LOAD PERTAMA
-========================================================= */
+$("kartuBarang").onchange=()=>{
+ const d=selectedData("kartuBarang"),st=getStock(d.kode);
+ $("kartuRingkasan").innerHTML=d.kode?`
+  <div class="stock-row"><span>Kode Barang</span><strong>${escapeHTML(d.kode)}</strong></div>
+  <div class="stock-row"><span>Nama Barang</span><strong>${escapeHTML(d.nama)}</strong></div>
+  <div class="stock-row"><span>Satuan</span><strong>${escapeHTML(d.satuan)}</strong></div>
+  <div class="stock-row"><span>Total Masuk</span><strong>${st.masuk}</strong></div>
+  <div class="stock-row"><span>Total Keluar</span><strong>${st.keluar}</strong></div>
+  <div class="stock-row"><span>Stok Akhir</span><strong>${st.akhir}</strong></div>`:"";
+};
 
 loadData();
-
-
-
-/* =========================================================
-   AUTO REFRESH
-   Setiap 2 menit
-========================================================= */
-
-setInterval(
-  loadData,
-  120000
-);
-
 </script>
-
 </body>
 </html>
